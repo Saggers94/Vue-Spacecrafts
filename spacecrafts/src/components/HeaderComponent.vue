@@ -16,31 +16,11 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <router-link class="nav-link" to="/"
-              >Home
+          <li class="nav-item" v-for="link in links" v-bind:key="link.title">
+            <router-link class="nav-link" v-bind:to="link.to"
+              >{{ link.title }}
               <span class="sr-only">(current)</span>
             </router-link>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/spacecrafts">Spacecrafts</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/about">About</a>
-          </li>
-          <!--  <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li> -->
-          <li class="nav-item">
-            <a class="nav-link" href="/contact">Contact</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="http://localhost:8000/login">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="http://localhost:8000/register"
-              >Register</a
-            >
           </li>
         </ul>
       </div>
@@ -49,7 +29,31 @@
 </template>
 
 <script>
-export default {};
+// import { useRoute } from "vue-router";
+import { ref } from "vue";
+export default {
+  setup() {
+    const links = ref([
+      { title: "Home", to: "/" },
+      { title: "Spacecrafts", to: "/spacecrafts" },
+      { title: "About", to: "/about" },
+      { title: "Contact", to: "/contact" },
+      { title: "Login", to: "/login" },
+      { title: "Register", to: "/register" },
+    ]);
+
+    // const route = useRoute();
+    // const path = ref("");
+
+    // onMounted(() => {
+    //   console.log(route.path);
+    // });
+
+    return {
+      links,
+    };
+  },
+};
 </script>
 
 <style></style>
