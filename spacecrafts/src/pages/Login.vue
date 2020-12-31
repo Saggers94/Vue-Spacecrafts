@@ -65,8 +65,8 @@ import { useRouter } from "vue-router";
 
 export default {
   setup() {
-    const email = ref("sagar@gmail.com");
-    const password = ref("simmu");
+    const email = ref("");
+    const password = ref("");
 
     const store = useStore();
     const router = useRouter();
@@ -86,7 +86,7 @@ export default {
           user.user_password == password.value
         ) {
           store.commit("setIsLoggedIn", true);
-          router.push({ path: "/" });
+          router.push({ path: "/spacecrafts" });
           return true;
         }
         return false;

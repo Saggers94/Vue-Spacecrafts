@@ -38,7 +38,7 @@
 
 <script>
 // import { useRoute } from "vue-router";
-import { ref, reactive, computed } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 export default {
   setup() {
@@ -50,9 +50,7 @@ export default {
       // { title: "Login", to: "/login" },
       { title: "Register", to: "/register" },
     ]);
-    const state = reactive({
-      isLoggedIn: false,
-    });
+
     const store = useStore();
 
     const logInOpen = () => {
@@ -72,7 +70,6 @@ export default {
       links,
       logout,
       isLoggedIn: computed(() => store.state.isLoggedIn),
-      state,
       logInOpen,
     };
   },

@@ -5,12 +5,7 @@
         <div class="card-header">Register</div>
 
         <div class="card-body">
-          <form method="POST" action="http://localhost:8000/register">
-            <input
-              type="hidden"
-              name="_token"
-              value="Hrkcs2dVXvxOqpoEMPFirW6bwKAP3nLhADHIRAnr"
-            />
+          <form method="POST" v-on:submit.prevent="submit">
             <div class="form-group row">
               <label for="name" class="col-md-4 col-form-label text-md-right"
                 >Name</label
@@ -22,8 +17,7 @@
                   type="text"
                   class="form-control "
                   name="name"
-                  value=""
-                  required
+                  v-model="state.name"
                   autocomplete="name"
                   autofocus
                 />
@@ -41,8 +35,7 @@
                   type="email"
                   class="form-control "
                   name="email"
-                  value=""
-                  required
+                  v-model="state.email"
                   autocomplete="email"
                 />
               </div>
@@ -61,7 +54,7 @@
                   type="password"
                   class="form-control "
                   name="password"
-                  required
+                  v-model="state.password"
                   autocomplete="new-password"
                 />
               </div>
@@ -80,7 +73,7 @@
                   type="password"
                   class="form-control"
                   name="password_confirmation"
-                  required
+                  v-model="state.retypePassword"
                   autocomplete="new-password"
                 />
               </div>
@@ -101,7 +94,46 @@
 </template>
 
 <script>
-export default {};
+import { reactive } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+export default {
+  setup() {
+    const router = useRouter();
+    const state = reactive({
+      name: "",
+      email: "",
+      password: "",
+      retypePassword: "",
+    });
+
+    const submit = async () => {
+      if (state.name && state.email && state.password && state.retypePassword) {
+        if (state.password == state.retypePassword) {
+          const user_object = {
+            user_name: state.name,
+            user_email: state.email,
+            user_password: state.password,
+          };
+
+          const { data } = await axios.post(
+            "https://springboot-spacecrafts-api.herokuapp.com/api/v1/users",
+            user_object
+          );
+
+          if (data) {
+            router.push({ path: "/login" });
+          }
+        }
+      }
+    };
+
+    return {
+      state,
+      submit,
+    };
+  },
+};
 </script>
 
 <style></style>
