@@ -26,7 +26,7 @@
             <a class="nav-link" v-bind:href="logInOpen()">Login</a>
           </li>
           <li class="nav-item" v-if="isLoggedIn">
-            <a class="nav-link" v-on:click="logout">
+            <a class="nav-link" href="" v-on:click="logout">
               Logout
             </a>
           </li>
