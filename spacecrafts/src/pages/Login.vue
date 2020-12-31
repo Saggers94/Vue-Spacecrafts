@@ -5,12 +5,7 @@
         <div class="card-header">Login</div>
 
         <div class="card-body">
-          <form method="POST" action="http://localhost:8000/login">
-            <input
-              type="hidden"
-              name="_token"
-              value="Hrkcs2dVXvxOqpoEMPFirW6bwKAP3nLhADHIRAnr"
-            />
+          <form method="POST" v-on:submit.prevent="submit">
             <div class="form-group row">
               <label for="email" class="col-md-4 col-form-label text-md-right"
                 >E-Mail Address</label
@@ -22,8 +17,7 @@
                   type="email"
                   class="form-control "
                   name="email"
-                  value=""
-                  required
+                  v-model="email"
                   autocomplete="email"
                   autofocus
                 />
@@ -34,8 +28,8 @@
               <label
                 for="password"
                 class="col-md-4 col-form-label text-md-right"
-                >Password</label
-              >
+                >Password
+              </label>
 
               <div class="col-md-6">
                 <input
@@ -43,26 +37,9 @@
                   type="password"
                   class="form-control "
                   name="password"
-                  required
+                  v-model="password"
                   autocomplete="current-password"
                 />
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <div class="col-md-6 offset-md-4">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    name="remember"
-                    id="remember"
-                  />
-
-                  <label class="form-check-label" for="remember">
-                    Remember Me
-                  </label>
-                </div>
               </div>
             </div>
 
@@ -71,11 +48,6 @@
                 <button type="submit" class="btn btn-primary">
                   Login
                 </button>
-
-                <!--                                     <a class="btn btn-link" href="http://localhost:8000/password/reset">
-                                        Forgot Your Password?
-                                    </a>
-                                 -->
               </div>
             </div>
           </form>
@@ -86,7 +58,48 @@
 </template>
 
 <script>
-export default {};
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
+export default {
+  setup() {
+    const email = ref("sagar@gmail.com");
+    const password = ref("simmu");
+
+    const store = useStore();
+    const router = useRouter();
+
+    onMounted(async () => {
+      const { data } = await axios.get(
+        "https://springboot-spacecrafts-api.herokuapp.com/api/v1/users"
+      );
+
+      store.commit("setUsers", data);
+    });
+
+    const submit = () => {
+      store.state.users.find((user) => {
+        if (
+          user.user_email == email.value &&
+          user.user_password == password.value
+        ) {
+          store.commit("setIsLoggedIn", true);
+          router.push({ path: "/" });
+          return true;
+        }
+        return false;
+      });
+    };
+
+    return {
+      email,
+      password,
+      submit,
+    };
+  },
+};
 </script>
 
 <style></style>

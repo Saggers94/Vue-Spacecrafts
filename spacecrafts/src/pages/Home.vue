@@ -15,7 +15,15 @@
 </template>
 
 <script>
-export default {};
+import { useStore } from "vuex";
+// import store from "../store/index";
+export default {
+  setup() {
+    const store = useStore();
+
+    console.log(store.state.isLoggedIn);
+  },
+};
 </script>
 
 <style></style>

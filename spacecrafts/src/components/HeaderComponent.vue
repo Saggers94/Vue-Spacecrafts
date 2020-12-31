@@ -22,6 +22,14 @@
               <span class="sr-only">(current)</span>
             </router-link>
           </li>
+          <li class="nav-item" v-if="!isLoggedIn">
+            <a class="nav-link" v-bind:href="logInOpen()">Login</a>
+          </li>
+          <li class="nav-item" v-if="isLoggedIn">
+            <a class="nav-link" v-on:click="logout">
+              Logout
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -30,7 +38,8 @@
 
 <script>
 // import { useRoute } from "vue-router";
-import { ref } from "vue";
+import { ref, reactive, computed } from "vue";
+import { useStore } from "vuex";
 export default {
   setup() {
     const links = ref([
@@ -38,10 +47,20 @@ export default {
       { title: "Spacecrafts", to: "/spacecrafts" },
       { title: "About", to: "/about" },
       { title: "Contact", to: "/contact" },
-      { title: "Login", to: "/login" },
+      // { title: "Login", to: "/login" },
       { title: "Register", to: "/register" },
     ]);
+    const state = reactive({
+      isLoggedIn: false,
+    });
+    const store = useStore();
 
+    const logInOpen = () => {
+      return "/login";
+    };
+    const logout = () => {
+      store.commit("setIsLoggedIn", false);
+    };
     // const route = useRoute();
     // const path = ref("");
 
@@ -51,6 +70,10 @@ export default {
 
     return {
       links,
+      logout,
+      isLoggedIn: computed(() => store.state.isLoggedIn),
+      state,
+      logInOpen,
     };
   },
 };
